@@ -7,13 +7,18 @@ const (
 )
 
 type Header struct {
-	Typ string
-	Alg AlgType
+	Typ string  `json:"typ"`
+	Alg AlgType `json:"alg"`
 }
 
 type Token struct {
-	Header    Header                 // 头
-	Payload   map[string]interface{} // 主要载荷
-	Signature string                 // 签名
-	tokenStr  string                 //  生成出来的token
+	Header    Header  `json:"header"`    // 头
+	Payload   Payload `json:"payload"`   // 主要载荷
+	Signature string  `json:"signature"` // 签名
+	tokenStr  string  //  生成出来的token
+}
+
+type Payload struct {
+	Payload map[string]string `json:"payload"`
+	Timeout int64             `json:"timeout"`
 }

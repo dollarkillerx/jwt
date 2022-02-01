@@ -19,7 +19,7 @@ func NewJwt(key string) *JWT {
 }
 
 // CreateToken :生成token
-func (jwt *JWT) CreateToken(payload map[string]interface{}) (string, error) {
+func (jwt *JWT) CreateToken(payload map[string]string, timeout int64) (string, error) {
 	header := Header{
 		Typ: "JWT",
 		Alg: HS256,
@@ -29,7 +29,10 @@ func (jwt *JWT) CreateToken(payload map[string]interface{}) (string, error) {
 		return "", err
 	}
 	headerBase64 := base64.URLEncoding.EncodeToString(headerJson)
-	payloadJson, err := json.Marshal(payload)
+	payloadJson, err := json.Marshal(Payload{
+		Payload: payload,
+		Timeout: timeout,
+	})
 	if err != nil {
 		return "", err
 	}
@@ -73,7 +76,7 @@ func TokenFormatString(token string) (Token, error) {
 	if err != nil {
 		return Token{}, err
 	}
-	var payload map[string]interface{}
+	var payload Payload
 	err = json.Unmarshal(decodePayload, &payload)
 	if err != nil {
 		return Token{}, err
