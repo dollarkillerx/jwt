@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
+	"time"
 )
 
 type JWT struct {
@@ -53,6 +54,11 @@ func (jwt *JWT) VerificationSignature(token Token) error {
 	}
 	if signature != token.Signature {
 		return errors.New("token authentication failed")
+	}
+	if token.Payload.Timeout > 0 {
+		if time.Now().Unix() > token.Payload.Timeout {
+			return errors.New("token expired")
+		}
 	}
 	return nil
 }
