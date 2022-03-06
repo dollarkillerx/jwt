@@ -1,5 +1,7 @@
 package jwt
 
+import "encoding/json"
+
 type AlgType string
 
 const (
@@ -19,6 +21,25 @@ type Token struct {
 }
 
 type Payload struct {
-	Payload map[string]string `json:"payload"`
-	Timeout int64             `json:"timeout"`
+	Payload interface{} `json:"payload"`
+	Timeout int64       `json:"timeout"`
+}
+
+func (p Payload) Unmarshal(r interface{}) error {
+	marshal, err := json.Marshal(p.Payload)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(marshal, r)
+	if err != nil {
+		return err
+	}
+
+	err = _validate.Struct(r)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

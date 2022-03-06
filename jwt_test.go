@@ -1,18 +1,21 @@
-# jwt
-simple jwt
+package jwt
 
-example:
+import (
+	"fmt"
+	"testing"
+	"time"
+)
 
-``` 
+func TestJWT(t *testing.T) {
 	type tok struct {
 		Name string `json:"name" validate:"required"`
-		Age int `json:"age"`
+		Age  int    `json:"age"`
 	}
 
 	jwt := NewJwt("f0950ead-a6c4-498b-ab3c-35ca91a730ad")
 	token, err := jwt.CreateToken(tok{
-		//Name: "dollarkiller",
-		Age:  16,
+		//Name: "asd",
+		Age: 16,
 	}, int64(time.Hour))
 	if err != nil {
 		panic(err)
@@ -33,4 +36,4 @@ example:
 	}
 
 	fmt.Println(tr)
-```
+}

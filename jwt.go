@@ -20,7 +20,7 @@ func NewJwt(key string) *JWT {
 }
 
 // CreateToken :生成token
-func (jwt *JWT) CreateToken(payload map[string]string, timeout int64) (string, error) {
+func (jwt *JWT) CreateToken(payload interface{}, timeout int64) (string, error) {
 	header := Header{
 		Typ: "JWT",
 		Alg: HS256,
